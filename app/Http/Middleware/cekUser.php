@@ -17,7 +17,7 @@ class cekUser
     public function handle(Request $request, Closure $next, $roles): Response
     {
         if (Auth::check()) {
-            return redirect('/')->withErrors('Anda harus login terlebih dahulu');
+            return redirect('/')->withErrors('Anda harus login terlebih dahulu cuyy');
             }
             $user = Auth::user();
             
@@ -25,7 +25,7 @@ class cekUser
             return $next($request);
             }else{
             
-            return redirect('/')->withErrors('Anda harus login terlebih dahulu');
+            return redirect('/')->withErrors('Anda harus login terlebih dahulu cuyy');
             }
     }
 }

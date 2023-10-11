@@ -1,9 +1,9 @@
 <?php
 
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\GuruController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SesiController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\GuruController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,37 +18,20 @@ use App\Http\Controllers\SesiController;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
-Route::get('/', [SesiController::class,'index']);
-Route::post('/', [SesiController::class,'login']);
-
-Route::get('/admin', [AdminController::class,'index']);
-Route::get('/guru', [GuruController::class,'index']);
-
-Route::get('/logout',[SesiController::class,'logout']);
 
 Route::middleware(['guest'])->group(function(){
     Route::get('/', [SesiController::class,'index']);
-    Route::post('/', [SesiController::class,'login']);
-    });
-    
-    Route::middleware(['auth'])->group(function () {
-    Route::get('/admin', [AdminController::class,'index']);
-    Route::get('/guru', [GuruController::class,'index']);
-    Route::get('/logout',[SesiController::class,'logout']);
-    });
+    Route::post('/', [SesiController::class,'login'])->name('login');
+});
 
-    Route::get('/', [SesiController::class,'index'])->name('login');
-    
-    Route::middleware(['auth'])->group(function () {
-        //
-        // Route::get('/admin',[AdminController::class,'index'])->middleware('Cek_login:admin');
-        // //
-        // Route::get('/gurubk',[GuruController::class,'index'])->middleware('Cek_login:gurubk');
-        Route::get('/logout',[UserController::class,'logout']);
-        Route::group(['middleware' => ['cekUser:admin']], function () {
-        Route::resource('/admin', AdminController::class);
-        });
-        Route::group(['middleware' => ['cekUser:gurubk']], function () {
-        Route::resource('/guru', GuruController::class);
-        });
-        });
+Route::middleware(['auth'])->group(function () {
+    Route::get('/admin', [AdminController::class, 'index']);
+    Route::get('/guru', [GuruController::class, 'index']);
+    Route::get('/logout',[SesiController::class,'logout']);
+    // Route::group(['middleware' => ['cekUser:admin']], function () {
+    //     Route::resource('/admin', AdminController::class);
+    //     });
+    //     Route::group(['middleware' => ['cekUser:gurubk']], function () {
+    //     Route::resource('/guru', GuruController::class);
+    // });
+});

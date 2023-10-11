@@ -7,40 +7,48 @@ use Illuminate\Support\Facades\Auth;
 
 class SesiController extends Controller
 {
-    function index(){
-        return view('login');
+    function index()
+    {
+        return view("login");
     }
-    function login(Request $request){ //daftar fungsi ini di route
-        $request->validate([
-        //cek isian
-        'username'=>'required',
-        'password'=>'required'
-        ],
-        //peringatan
-        [
-        'username.required' => 'username wajib diisi!',
-        'password.required' => 'password wajib diisi!'
-        ]);
+    function login(Request $request)
+    {
+        //daftar fungsi ini di route
+
+        $request->validate(
+            [
+                //cek isian
+                "username" => "required",
+                "password" => "required",
+            ],
+
+            //peringatan
+            [
+                "username.required" => "username wajib diisi!",
+                "password.required" => "password wajib diisi!",
+            ]
+        );
+        //pengecekan apakah yang dimasukkan sudah benar
         $infologin = [
-            'username'=>$request->username,
-            'password'=>$request->password, ];
-            if (Auth::attempt($infologin)) {
-            // echo "sukses";
-            // exit();
+            "username" => $request->username,
+            "password" => $request->password,
+        ];
+        if (Auth::attempt($infologin)) {
             $user = Auth::user();
-                if ($user->level == 'admin') {
-                    return redirect('/admin');
-                } elseif ($user->level == 'gurubk') {
-                    return redirect('/guru');
-}
-            }else{ //jika gagal
+            if ($user->level == 'admin') {
+            return redirect('/admin');
+            } elseif ($user->level == 'gurubk') {
+            return redirect('/guru');
+            }
+        } else {
+            //jika gagal
             return redirect('')->withErrors('username dan password salah')->withInput();
+        }
     }
-  }
-  public function logout(Request $request)
-      {
-          $request->session()->flush();
-          Auth::logout();
-          return Redirect('/');
-}
+    public function logout(Request $request)
+    {
+        $request->session()->flush();
+        Auth::logout();
+        return Redirect("/");
+    }
 }
