@@ -16,16 +16,30 @@ class cekUser
      */
     public function handle(Request $request, Closure $next, $roles): Response
     {
-        if (Auth::check()) {
-            return redirect('/')->withErrors('Anda harus login terlebih dahulu cuyy');
+        if (!Auth::check()) {
+            return redirect("/")->withErrors(
+                "Anda harus login terlebih dahulu"
+            );
+        }
+        $user = Auth::user();
+        if ($user->level == $roles) {
+            // return $next($request);
+            $response = $next($request);
+            $headers = [
+                "Cache-Control" => "nocache, no-store, max-age=0, must-revalidate",
+                "Pragma",
+                "no-cache",
+                "Expires",
+                "Fri, 01 Jan 1990 00:00:00 GMT",
+            ];
+            foreach ($headers as $key => $value) {
+                $response->headers->set($key, $value);
             }
-            $user = Auth::user();
-            
-            if($user->level == $roles){
-            return $next($request);
-            }else{
-            
-            return redirect('/')->withErrors('Anda harus login terlebih dahulu cuyy');
-            }
+            return $response;
+        } else {
+            return redirect("/")->withErrors(
+                "Anda harus login terlebih dahulu"
+            );
+        }
     }
 }

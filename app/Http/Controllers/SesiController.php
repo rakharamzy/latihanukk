@@ -42,13 +42,13 @@ class SesiController extends Controller
             }
         } else {
             //jika gagal
-            return redirect('')->withErrors('username dan password salah')->withInput();
+            return redirect()->back()->withErrors('username dan password salah')->withInput();
         }
     }
     public function logout(Request $request)
     {
         $request->session()->flush();
         Auth::logout();
-        return Redirect("/");
+        return redirect("/");
     }
 }

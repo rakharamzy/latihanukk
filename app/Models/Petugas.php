@@ -34,4 +34,5 @@ protected $casts = [
 'username_verified_at' => 'datetime',
 'password' => 'hashed',
 ];
+
 }
